@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내 정보 - 동네북</title><link rel="stylesheet" href="/style.css"><script src="/config.js"></script><script src="/common.js"></script></head>
+<body>
+<div class="wrap"><div class="box" style="max-width:480px" id="b"></div></div>
+<script>
+header('me');
+document.getElementById('b').innerHTML = window.ME
+  ? `<h1>내 정보</h1><p class="sub">${esc(window.ME.nickname)} 님 · ${esc(window.ME.region)}</p><p>이메일: ${esc(window.ME.email)}</p>`
+  : `<h1>내 정보</h1><p class="sub">로그인하면 내 정보와 내 판매글을 볼 수 있습니다.</p><a class="btn green" href="/login">로그인</a>`;
+</script>
+</body></html>

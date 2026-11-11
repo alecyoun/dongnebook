@@ -1,0 +1,22 @@
+{
+  "name": "dongnebook",
+  "version": "1.0.0",
+  "description": "동네북 - 동네 중고거래 서비스",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "multer": "^2.5.0",
+    "openai": "^7.55.0",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

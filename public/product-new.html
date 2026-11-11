@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>글쓰기 - 동네북</title><link rel="stylesheet" href="/style.css"><script src="/config.js"></script><script src="/common.js"></script></head>
+<body>
+<div class="wrap"><div class="box">
+  <h1 id="t">판매글 쓰기</h1>
+  <p class="sub">이웃에게 팔고 싶은 물건을 올려 보세요.</p>
+  <form id="f">
+    <label>사진</label>
+    <div class="photo"><label class="ph" for="image" id="ph">사진 선택</label><input type="file" id="image" name="image" accept="image/*" style="display:none"><span class="meta">대표 사진 1장</span></div>
+    <label for="name">제목</label><input type="text" id="name" name="name" placeholder="예: 무선 키보드" required>
+    <label for="price">가격(원)</label><input type="number" id="price" name="price" placeholder="가격을 입력하세요" required>
+    <label for="description">설명</label><textarea id="description" name="description" placeholder="물건의 상태, 사용 기간 등을 적어 주세요." required></textarea>
+    <label for="region">동네</label><select id="region" name="region"></select>
+    <button class="btn green full" type="submit" id="sb">등록</button>
+  </form>
+</div></div>
+<script>
+const editId = (location.pathname.match(/\/products\/(\d+)\/edit/) || [])[1];
+header(editId ? 'home' : 'write');
+const $ = (i) => document.getElementById(i);
+$('region').innerHTML = regionOptions(window.ME ? window.ME.region : '역삼동');
+$('image').onchange = e => { const f = e.target.files[0]; if (f) $('ph').innerHTML = `<img src="${URL.createObjectURL(f)}">`; };
+if (editId) {
+  $('t').textContent = '판매글 수정'; $('sb').textContent = '수정';
+  fetch('/api/products/' + editId).then(r => r.json()).then(p => { $('name').value = p.name; $('price').value = p.price; $('description').value = p.description; $('region').innerHTML = regionOptions(p.region); if (p.imageUrl) $('ph').innerHTML = `<img src="${p.imageUrl}">`; });
+}
+$('f').onsubmit = async e => {
+  e.preventDefault();
+  const r = await fetch(editId ? '/api/products/' + editId : '/api/products', { method: editId ? 'PUT' : 'POST', body: new FormData(e.target) });
+  const j = await r.json();
+  if (!r.ok) return alert(j.error || '등록에 실패했습니다.');
+  location.href = '/products/' + j.id;
+};
+</script>
+</body></html>
