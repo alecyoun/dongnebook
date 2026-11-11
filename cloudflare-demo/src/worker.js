@@ -251,7 +251,7 @@ async function handle(req, env) {
     const limited = await takeAi(env, req); if (limited) return err(429, limited);
     try {
       const answer = await openai(env, {
-        model: 'gpt-4o-mini', max_tokens: 400,
+        model: 'gpt-6-luna', max_completion_tokens: 400,
         messages: [
           { role: 'system', content: '너는 동네북의 친절한 도우미야. 이용 방법과 안전한 거래 수칙을 안내하고, 모르는 내용은 모른다고 답해. '
             + '아래 안내문을 참고해서 3~5문장으로 짧게 답하고, 특정 거래가 사기인지 단정하지 마. 안내문에 없는 분쟁, 피해, 환불 문의는 데모라 처리할 수 없다고 안내해. '
@@ -271,7 +271,7 @@ async function handle(req, env) {
     const limited = await takeAi(env, req); if (limited) return err(429, limited);
     try {
       const content = await openai(env, {
-        model: 'gpt-4o-mini', response_format: { type: 'json_object' }, max_tokens: 500,
+        model: 'gpt-6-luna', response_format: { type: 'json_object' }, max_completion_tokens: 500,
         messages: [{ role: 'user', content: [
           { type: 'text', text: '이 물건 사진을 보고 중고거래 판매글 초안으로 제목, 카테고리, 설명 3문장을 써줘. 가격은 쓰지 마. '
             + `카테고리는 다음 중 하나로 골라: ${CATEGORIES.join(', ')}. 설명은 사진에서 보이는 것(종류, 색, 모양, 겉보기 상태)만 쓰고, 구입 시기, 사용 기간, 연결 방식, 구성품처럼 사진으로 알 수 없는 내용은 지어내지 마. `
