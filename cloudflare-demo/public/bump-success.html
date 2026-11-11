@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>결제 확인 - 동네북</title><link rel="stylesheet" href="/style.css"><script src="/config.js"></script><script src="/common.js"></script></head>
+<body>
+<div class="wrap"><div class="box"><h1>결제를 확인하고 있어요</h1><p class="sub" id="m">잠시만 기다려 주세요.</p></div></div>
+<script>
+header('home');
+(async () => {
+  const q = new URLSearchParams(location.search);
+  const r = await fetch('/api/bump/confirm', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ paymentKey: q.get('paymentKey'), orderId: q.get('orderId'), amount: q.get('amount') }) });
+  const j = await r.json();
+  if (!r.ok) { document.getElementById('m').textContent = '결제 확인 실패: ' + j.error; return; }
+  location.replace('/?bumped=' + j.product.id + '&amount=' + j.amount);
+})();
+</script>
+</body></html>

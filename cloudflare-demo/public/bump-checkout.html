@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>끌어올리기 결제 - 동네북</title><link rel="stylesheet" href="/style.css"><script src="/config.js"></script><script src="/common.js"></script>
+<script src="https://js.tosspayments.com/v2/standard"></script></head>
+<body>
+<div class="wrap"><div class="box">
+  <h1>끌어올리기 결제</h1>
+  <p class="sub">결제가 끝나면 판매글이 내 동네 목록 맨 위로 올라가요.</p>
+  <div class="notice" style="margin-bottom:14px">토스페이먼츠 <b>테스트 결제</b>라 실제로 돈이 나가지 않아요.</div>
+  <div class="order" id="order"></div>
+  <div id="payment-method"></div><div id="agreement"></div>
+  <button class="btn green full" id="pay" disabled>결제하기</button>
+</div></div>
+<script>
+header('home');
+const productId = new URLSearchParams(location.search).get('productId');
+(async () => {
+  const p = await (await fetch('/api/products/' + productId)).json();
+  const r = await fetch('/api/bump/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId }) });
+  const o = await r.json();
+  if (!r.ok) { document.getElementById('order').textContent = o.error; return; }
+  document.getElementById('order').innerHTML = `${p.imageUrl ? `<img src="${p.imageUrl}" alt="">` : ''}<div><div class="meta">끌어올리기 1회</div><b>${esc(p.name)}</b></div><div class="amt">${won(o.amount)}</div>`;
+  const widgets = TossPayments(o.clientKey).widgets({ customerKey: o.customerKey });
+  await widgets.setAmount({ currency: 'KRW', value: o.amount });
+  await Promise.all([widgets.renderPaymentMethods({ selector: '#payment-method', variantKey: 'DEFAULT' }), widgets.renderAgreement({ selector: '#agreement', variantKey: 'AGREEMENT' })]);
+  const btn = document.getElementById('pay'); btn.disabled = false; btn.textContent = won(o.amount) + ' 결제하기';
+  btn.onclick = () => widgets.requestPayment({ orderId: o.orderId, orderName: o.orderName, customerName: window.ME.nickname,
+    successUrl: location.origin + '/payments/success', failUrl: location.origin + '/payments/fail' }).catch((e) => { if (e.code !== 'USER_CANCEL') alert(e.message); });
+})();
+</script>
+</body></html>

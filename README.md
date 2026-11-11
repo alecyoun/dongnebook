@@ -10,3 +10,7 @@ npm start
 ```
 
 브라우저에서 http://localhost:3000 에 접속합니다.
+
+## Cloudflare 데모
+
+[`cloudflare-demo/`](cloudflare-demo/) 폴더는 동네북을 Cloudflare Workers로 옮겨 https://dongne.technote.wiki 에 올린 데모 소스입니다.

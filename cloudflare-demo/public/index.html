@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동네북 - 우리 동네 중고거래</title><link rel="stylesheet" href="/style.css"><script src="/config.js"></script><script src="/common.js"></script></head>
+<body>
+<div class="wrap">
+  <div class="tophead"><h1 id="h">우리 동네 판매글</h1><a class="btn green" href="/products/new">+ 글쓰기</a></div>
+  <div id="notice"></div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+header('home');
+let region = window.ME ? window.ME.region : '';
+function pick(r) { region = r; load(); }
+function chips() {
+  document.getElementById('chips').innerHTML = ['', ...window.REGIONS].map(r => `<span class="chip ${r === region ? 'on' : ''}" onclick="pick('${r}')">${r || '전체 동네'}</span>`).join('');
+  document.getElementById('h').textContent = region ? ((window.ME && region === window.ME.region ? '내 동네 ' : '') + region + ' 판매글') : '우리 동네 판매글';
+}
+const qs = new URLSearchParams(location.search); const bumped = qs.get('bumped');
+async function load() {
+  chips();
+  const j = await (await fetch('/api/products?limit=100' + (region ? '&region=' + encodeURIComponent(region) : ''))).json();
+  document.getElementById('grid').innerHTML = j.data.map(p => `
+    <a class="card${p.id == bumped ? ' hl' : ''}" href="/products/${p.id}">
+      ${p.imageUrl ? `<img src="${p.imageUrl}" alt="">` : '<div class="noimg"></div>'}
+      <div class="body">
+        <p class="title">${esc(p.name)}</p>
+        <div class="price">${won(p.price)}</div>
+        <div class="meta"><span class="badge s-${p.status}">${p.status}</span><span class="badge region">${esc(p.region)}</span><span>${p.bumpedAt ? '<span class="bumped">끌올</span> ' + ago(p.bumpedAt) : ago(p.createdAt)}</span></div>
+      </div>
+    </a>`).join('');
+  if (bumped) {
+    const b = j.data.find(p => p.id == bumped);
+    if (b) document.getElementById('notice').innerHTML = `<div class="notice"><b>끌어올리기 완료!</b> ‘${esc(b.name)}’ 판매글을 내 동네 목록 맨 위로 올렸어요. (테스트 결제 ${won(qs.get('amount') || 0)})</div>`;
+  }
+}
+load();
+</script>
+</body></html>

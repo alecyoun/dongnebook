@@ -1,0 +1,24 @@
+{
+  // 동네북 데모: https://dongne.technote.wiki
+  "name": "dongnebook-demo",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none"
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "dongnebook-demo", "database_id": "efc2a0eb-f654-4cd8-ad86-045311c46777" }
+  ],
+  "r2_buckets": [
+    { "binding": "IMAGES", "bucket_name": "dongnebook-demo-images" }
+  ],
+  // 매일 새벽 4시(한국 시간) = 19시(UTC)에 처음 상태로 되돌립니다.
+  "triggers": { "crons": ["0 19 * * *"] },
+  "routes": [
+    { "pattern": "dongne.technote.wiki", "custom_domain": true }
+  ],
+  "observability": { "enabled": true }
+}

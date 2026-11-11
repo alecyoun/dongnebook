@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>결제 실패 - 동네북</title><link rel="stylesheet" href="/style.css"><script src="/config.js"></script><script src="/common.js"></script></head>
+<body>
+<div class="wrap"><div class="box"><h1>결제가 완료되지 않았어요</h1><p class="sub" id="m"></p><a class="btn" href="/">홈으로</a></div></div>
+<script>header('home'); document.getElementById('m').textContent = new URLSearchParams(location.search).get('message') || '';</script>
+</body></html>
