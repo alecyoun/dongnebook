@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 상세 - 키보드</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* 모바일 웹앱 느낌 보정 */
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800">
+
+<!-- 모바일 웹앱 헤더 -->
+<header class="fixed top-0 left-0 right-0 h-14 bg-white border-b z-20">
+    <div class="h-full flex items-center justify-center font-semibold">
+        상품 상세
+    </div>
+</header>
+
+<!-- 본문 -->
+<main class="pt-14 pb-28">
+
+    <!-- 상품 이미지 -->
+    <section class="w-full h-[320px] bg-gray-100 flex items-center justify-center">
+        <img src="sample.png"
+             alt="상품 이미지"
+             class="w-full h-full object-contain">
+    </section>
+
+    <!-- 상품 정보 -->
+    <section class="px-4 py-6 space-y-4">
+
+        <!-- 상품명 -->
+        <h1 class="text-xl font-bold">
+            키보드
+        </h1>
+
+        <!-- 별점 -->
+        <div class="flex items-center gap-2 text-sm">
+            <span class="text-yellow-400">★★★★★</span>
+            <span class="text-gray-500">(93)</span>
+        </div>
+
+        <!-- 가격 -->
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="text-red-600 font-bold">10%</span>
+                <span class="text-2xl font-semibold text-red-600">
+                    ₩44,100
+                </span>
+            </div>
+            <p class="text-sm text-gray-400 line-through">
+                ₩49,000
+            </p>
+        </div>
+
+        <!-- 설명 -->
+        <p class="text-gray-600 leading-relaxed text-sm">
+            이곳에 상품에 대한 간단한 설명이 들어갑니다.
+            주요 특징, 소재, 사용 방법 등을 간략히 작성합니다.
+        </p>
+
+    </section>
+
+</main>
+
+<!-- 하단 고정 구매 영역 (웹앱 핵심) -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t z-30">
+    <div class="flex gap-2 p-3">
+
+        <button
+            class="w-1/2 h-12 border border-black font-medium rounded">
+            장바구니
+        </button>
+
+        <button
+            class="w-1/2 h-12 bg-black text-white font-medium rounded">
+            구매하기
+        </button>
+
+    </div>
+</div>
+
+<!-- 데스크톱 대응 -->
+<style>
+    @media (min-width: 768px) {
+
+        header {
+            position: static;
+        }
+
+        main {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        body::before {
+            content: "";
+            display: block;
+        }
+    }
+</style>
+
+</body>
+</html>
